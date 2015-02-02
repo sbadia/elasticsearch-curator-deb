@@ -1,0 +1,23 @@
+Author: Apollon Oikonomopoulos <apoikos@debian.org>
+Description: Properly read unicode data from README.md for Python 3
+ README.md contains non-ASCII characters and Python 3 errors out since it was
+ not instructed to read unicode data from the file. Fix this by opening the
+ file with a utf-8 encoding for Python 3.
+
+Forwarded: no
+Last-Update: 2015-02-02
+--- a/setup.py
++++ b/setup.py
+@@ -4,7 +4,11 @@
+ 
+ # Utility function to read from file.
+ def fread(fname):
+-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
++    try:
++        text = open(os.path.join(os.path.dirname(__file__), fname), encoding='utf-8').read()
++    except TypeError:
++        text = open(os.path.join(os.path.dirname(__file__), fname)).read()
++    return text
+ 
+ def get_version():
+     VERSION = fread("VERSION").strip()

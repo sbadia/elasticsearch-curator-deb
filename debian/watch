@@ -1,0 +1,3 @@
+version=3
+
+https://github.com/elasticsearch/curator/releases .*/archive/v(.*).tar.gz

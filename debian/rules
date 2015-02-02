@@ -1,0 +1,29 @@
+#!/usr/bin/make -f
+
+export PYBUILD_NAME=elasticsearch-curator
+
+%:
+	dh $@ --with python2,python3,sphinxdoc --buildsystem=pybuild
+
+override_dh_installchangelogs:
+	dh_installchangelogs Changelog.rst
+
+override_dh_auto_build:
+	dh_auto_build
+	PYTHONPATH=. sphinx-build -b html -N docs/ docs/.build/html
+
+override_dh_clean:
+	rm -rf docs/.build
+	dh_clean
+
+override_dh_auto_install:
+	dh_auto_install
+	mv debian/python-elasticsearch-curator/usr/bin debian/elasticsearch-curator/usr
+	rm -rf debian/python3-elasticsearch-curator/usr/bin
+
+# Tests consist mainly of integration tests against a running ES instance (and
+# delete all data on it), so disable them. They are better suited for DEP-8.
+override_dh_auto_test:
+
+.PHONY: override_dh_auto_test override_dh_installchangelogs override_dh_auto_build \
+	override_dh_clean override_dh_auto_install

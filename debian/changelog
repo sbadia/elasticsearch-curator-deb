@@ -1,0 +1,7 @@
+elasticsearch-curator (2.1.2-1) unstable; urgency=low
+
+  * Initial release (closes: #776791)
+  * Disable testuite; upstream runs integration tests against a local ES
+    instance, erasing existing data.
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Mon, 02 Feb 2015 13:53:33 +0200

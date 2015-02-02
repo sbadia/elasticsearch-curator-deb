@@ -1,0 +1,86 @@
+Source: elasticsearch-curator
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Apollon Oikonomopoulos <apoikos@debian.org>
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 9),
+               dh-python,
+               python-all,
+               python-setuptools,
+               python-elasticsearch (>= 1.0.0),
+               python3-all,
+               python3-setuptools
+Build-Depends-Indep: libjs-jquery, python-sphinx (>= 1.0.7+dfsg-1~)
+Standards-Version: 3.9.6
+Homepage: https://github.com/elasticsearch/curator
+Vcs-Browser: http://anonscm.debian.org/viewsvn/python-modules/packages/elasticsearch-curator/trunk
+Vcs-Svn: svn://anonscm.debian.org/python-modules/packages/elasticsearch-curator/trunk
+X-Python-Version: >= 2.6
+X-Python3-Version: >= 3.2
+
+Package: elasticsearch-curator
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch-curator (= ${binary:Version})
+Description: command-line tool for managing Elasticsearch time-series indices
+ Elasticsearch Curator helps manage Elasticsearch time-series indices. It
+ consists of a Python library and a CLI tool providing a high-level interface
+ to Elasticsearch administration tasks, such as:
+ .
+  - Management of index aliases
+  - Index optimization
+  - Changing the replica count
+  - Modifying the shard/index allocation using routing tags
+  - Index snapshotting
+ .
+ This package contains the curator and es_repo_mgr command-line tools.
+
+Package: python-elasticsearch-curator
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch (>= 1.0.0)
+Suggests: python-elasticsearch-curator-doc
+Description: Python library for managing Elasticsearch time-series indices
+ Elasticsearch Curator helps manage Elasticsearch time-series indices. It
+ consists of a Python library and a CLI tool providing a high-level interface
+ to Elasticsearch administration tasks, such as:
+ .
+  - Management of index aliases
+  - Index optimization
+  - Changing the replica count
+  - Modifying the shard/index allocation using routing tags
+  - Index snapshotting
+ .
+ This package contains the Python 2 version of the library.
+
+Package: python3-elasticsearch-curator
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3-elasticsearch (>= 1.0.0)
+Suggests: python-elasticsearch-curator-doc
+Description: Python 3 library for managing Elasticsearch time-series indices
+ Elasticsearch Curator helps manage Elasticsearch time-series indices. It
+ consists of a Python library and a CLI tool providing a high-level interface
+ to Elasticsearch administration tasks, such as:
+ .
+  - Management of index aliases
+  - Index optimization
+  - Changing the replica count
+  - Modifying the shard/index allocation using routing tags
+  - Index snapshotting
+ .
+ This package contains the Python 3 version of the library.
+
+Package: python-elasticsearch-curator-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}, ${sphinxdoc:Depends}
+Description: Python library for managing Elasticsearch time-series indices (documentation)
+ Elasticsearch Curator helps manage Elasticsearch time-series indices. It
+ consists of a Python library and a CLI tool providing a high-level interface
+ to Elasticsearch administration tasks, such as:
+ .
+  - Management of index aliases
+  - Index optimization
+  - Changing the replica count
+  - Modifying the shard/index allocation using routing tags
+  - Index snapshotting
+ .
+ This package contains the Python library documentation.
