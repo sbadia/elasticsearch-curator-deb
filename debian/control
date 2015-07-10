@@ -20,7 +20,8 @@ X-Python3-Version: >= 3.2
 
 Package: elasticsearch-curator
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch-curator (= ${binary:Version})
+Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch-curator (= ${binary:Version}),
+         python-pkg-resources
 Description: command-line tool for managing Elasticsearch time-series indices
  Elasticsearch Curator helps manage Elasticsearch time-series indices. It
  consists of a Python library and a CLI tool providing a high-level interface
@@ -36,7 +37,8 @@ Description: command-line tool for managing Elasticsearch time-series indices
 
 Package: python-elasticsearch-curator
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch (>= 1.0.0)
+Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch (>= 1.0.0),
+         python-pkg-resources
 Suggests: python-elasticsearch-curator-doc
 Description: Python library for managing Elasticsearch time-series indices
  Elasticsearch Curator helps manage Elasticsearch time-series indices. It
@@ -53,7 +55,8 @@ Description: Python library for managing Elasticsearch time-series indices
 
 Package: python3-elasticsearch-curator
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-elasticsearch (>= 1.0.0)
+Depends: ${misc:Depends}, ${python3:Depends}, python3-elasticsearch (>= 1.0.0),
+         python3-pkg-resources
 Suggests: python-elasticsearch-curator-doc
 Description: Python 3 library for managing Elasticsearch time-series indices
  Elasticsearch Curator helps manage Elasticsearch time-series indices. It
