@@ -16,17 +16,23 @@ def seal_indices(client, indices):
     indices = prune_closed(client, indices)
     es_version = get_version(client)
     errcode = ''
+    results = {}
     try:
         if es_version >= (1, 6, 0):
-            results = client.indices.flush_synced(index=to_csv(indices))
+            if len(indices) > 0:
+                results = client.indices.flush_synced(index=to_csv(indices))
+            else:
+                logger.warn('No indices to seal.')
+                return True
         else:
             logger.error('Your version of Elasticsearch ({0}) does not support index sealing (synced flush).  Must be 1.6.0 or higher.'.format(es_version))
-            results = {}
     except Exception as e:
         logger.warn('Non-fatal error encountered.')
-        logger.debug('Error: {0}.  Message: {1}'.format(e.status_code, e.error))
-        errcode = e.status_code # Most likely to be 409: Conflict Error
-        results = e.info
+        try:
+            logger.debug('Error: {0}.  Message: {1}'.format(e.status_code, e.error))
+            results = e.info
+        except AttributeError:
+            logger.debug('Error: {0}'.format(e))
     total = results.pop('_shards') if '_shards' in results else {"total":0,"successful":0,"failed":0}
     fails = [ i for i in sorted(results) if results[i]['failed'] > 0 ]
     if len(fails) > 0:

@@ -14,6 +14,7 @@
 * <<loglevel,--loglevel>>
 * <<master-only,--master-only>>
 * <<port,--port>>
+* <<timeout,--timeout>>
 * <<url_prefix,--url_prefix>>
 * <<use_ssl,--use_ssl>>
 * <<version,--version>>
@@ -39,6 +40,10 @@ _Snapshot selection only_
 * <<snapshot_flag,--snapshot>>
 * <<all-snapshots,--all-snapshots>>
 * <<repository,--repository>>
+
+_Command flags_
+
+* <<skip-repo-validation,--skip-repo-validation>>
 --
 
 include::debug.asciidoc[]
@@ -51,6 +56,7 @@ include::logformat.asciidoc[]
 include::loglevel.asciidoc[]
 include::master-only.asciidoc[]
 include::port.asciidoc[]
+include::timeout.asciidoc[]
 include::url_prefix.asciidoc[]
 include::use_ssl.asciidoc[]
 include::version.asciidoc[]
@@ -68,3 +74,4 @@ include::all-indices.asciidoc[]
 include::snapshot_flag.asciidoc[]
 include::all-snapshots.asciidoc[]
 include::repository.asciidoc[]
+include::skip-repo-validation.asciidoc[]
