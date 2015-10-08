@@ -3,10 +3,16 @@
 *.py[co]
 build
 dist
+scratch
 docs/_build
 *.egg
+.eggs
 elasticsearch_curator.egg-info
+elasticsearch_curator_dev.egg-info
 .coverage
 .idea
 coverage.xml
 nosetests.xml
+index.html
+docs/asciidoc/html_docs
+wheelhouse
