@@ -1,14 +1,24 @@
-Author: Apollon Oikonomopoulos <apoikos@debian.org>
-Description: Properly read unicode data from README.md for Python 3
+From ce5f356fd2a66e4937809e8839b9c43d7d4106ef Mon Sep 17 00:00:00 2001
+From: Apollon Oikonomopoulos <apoikos@debian.org>
+Date: Thu, 8 Oct 2015 09:00:30 -0700
+Subject: Properly read unicode data from README.md for Python 3
+
  README.md contains non-ASCII characters and Python 3 errors out since it was
  not instructed to read unicode data from the file. Fix this by opening the
  file with a utf-8 encoding for Python 3.
 
 Forwarded: no
 Last-Update: 2015-02-02
+Patch-Name: setup.py-read-README-utf-8
+---
+ setup.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index fd43444..629b2bc 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -4,7 +4,11 @@
+@@ -5,7 +5,11 @@ from setuptools import setup
  
  # Utility function to read from file.
  def fread(fname):
@@ -20,4 +30,4 @@ Last-Update: 2015-02-02
 +    return text
  
  def get_version():
-     VERSION = fread("VERSION").strip()
+     VERSIONFILE="curator/_version.py"
