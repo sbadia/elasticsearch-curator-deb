@@ -1,0 +1,12 @@
+.*.swp
+*~
+*.py[co]
+build
+dist
+docs/_build
+*.egg
+elasticsearch_curator.egg-info
+.coverage
+.idea
+coverage.xml
+nosetests.xml
