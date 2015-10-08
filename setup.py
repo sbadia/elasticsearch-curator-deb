@@ -32,7 +32,7 @@ setup(
     author = "Aaron Mildenstein",
     author_email = "aaron@mildensteins.com",
     description = "Tending your Elasticsearch indices",
-    long_description=fread('README.md'),
+    long_description=fread('README.rst'),
     url = "http://github.com/elastic/curator",
     download_url = "https://github.com/elastic/curator/tarball/v" + get_version(),
     license = "Apache License, Version 2.0",
@@ -50,5 +50,5 @@ setup(
         "License :: OSI Approved :: Apache Software License",
     ],
     test_suite = "test.run_tests.run_all",
-    tests_require = ["mock", "nose", "coverage", "nosexcover"]
+    tests_require = ["mock==1.0.1", "nose", "coverage", "nosexcover"]
 )

@@ -3,6 +3,51 @@
 Changelog
 =========
 
+3.2.3 (16 July 2015)
+--------------------
+
+**Bug fix**
+
+  * In order to address customer and community issues with bulk deletes, the
+    ``master_timeout`` is now invoked for delete operations.  This should address
+    503s with 30s timeouts in the debug log, even when ``--timeout`` is set to
+    a much higher value.  The ``master_timeout`` is tied to the ``--timeout``
+    flag value, but will not exceed 300 seconds. #420 (untergeek)
+
+**General**
+
+  * Mixing it up a bit here by putting `General` second!  The only other changes
+    are that logging has been improved for deletes so you won't need to have the
+    ``--debug`` flag to see if you have error codes >= 400, and some code
+    documentation improvements.
+
+3.2.2 (13 July 2015)
+--------------------
+
+**General**
+
+  * This is a very minor change.  The ``mock`` library recently removed support
+    for Python 2.6.  As many Curator users are using RHEL/CentOS 6, which is
+    pinned to Python 2.6, this requires the mock version referenced by Curator
+    to also be pinned to a supported version (``mock==1.0.1``).
+
+3.2.1 (10 July 2015)
+--------------------
+
+**General**
+
+  * Added delete verification & retry (fixed at 3x) to potentially cover an edge
+    case in #420 (untergeek)
+  * Since GitHub allows rST (reStructuredText) README documents, and that's what
+    PyPI wants also, the README has been rebuilt in rST. (untergeek)
+
+**Bug fixes**
+
+  * If closing indices with ES 1.6+, and all indices are closed, ensure that the
+    seal command does not try to seal all indices.  Reported in #426 (untergeek)
+  * Capture AttributeError when sealing indices if a non-TransportError occurs.
+    Reported in #429 (untergeek)
+
 3.2.0 (25 June 2015)
 --------------------
 
