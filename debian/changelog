@@ -1,3 +1,9 @@
+elasticsearch-curator (3.3.0-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Fri, 23 Oct 2015 15:58:59 +0300
+
 elasticsearch-curator (3.2.3-1) unstable; urgency=medium
 
   * New upstream release.
