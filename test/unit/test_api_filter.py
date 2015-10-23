@@ -30,6 +30,9 @@ re_test_indices = [
     "logstashfoo", "logstashbar",
     ]
 
+sized           = { u'index1': {u'settings': {u'index': {u'number_of_replicas': u'0'} } },
+                    u'index2': {u'settings': {u'index': {u'number_of_replicas': u'0'} } } }
+
 class FilterBySpace(TestCase):
     def test_filter_by_space_param_check(self):
         client = Mock()
@@ -44,6 +47,7 @@ class FilterBySpace(TestCase):
         client = Mock()
         ds = 10.0
         client.cluster.state.return_value = open_indices
+        client.indices.get_settings.return_value = sized
         # Build return value of over 1G in size for each index
         client.indices.status.return_value = indices_space
         self.assertEqual([], curator.filter_by_space(client, named_indices, disk_space=ds))
@@ -51,6 +55,7 @@ class FilterBySpace(TestCase):
         client = Mock()
         ds = 2.0
         client.cluster.state.return_value = open_indices
+        client.indices.get_settings.return_value = sized
         # Build return value of over 1G in size for each index
         client.indices.status.return_value = indices_space
         self.assertEqual(["index1"], curator.filter_by_space(client, named_indices, disk_space=ds))
@@ -58,6 +63,7 @@ class FilterBySpace(TestCase):
         client = Mock()
         ds = 2.0
         client.cluster.state.return_value = open_indices
+        client.indices.get_settings.return_value = sized
         # Build return value of over 1G in size for each index
         client.indices.status.return_value = indices_space
         self.assertEqual(["index2"], curator.filter_by_space(client, named_indices, disk_space=ds, reverse=False))
@@ -310,6 +316,22 @@ class TestTimestampCheck(TestCase):
         ts = '%Y.%m.%d'
         tu = 'days'
         v  = 30
+        timestamp = '2015.01.01'
+        utc_now = datetime(2015, 1, 5)
+        self.assertFalse(curator.timestamp_check(timestamp, timestring=ts,
+            time_unit=tu, value=v, utc_now=utc_now))
+    def test_timestamp_check_get_cutoff_with_none(self):
+        ts = '%Y.%m.%d'
+        tu = 'days'
+        v  = None
+        timestamp = '2015.01.01'
+        utc_now = datetime(2015, 1, 5)
+        self.assertFalse(curator.timestamp_check(timestamp, timestring=ts,
+            time_unit=tu, value=v, utc_now=utc_now))
+    def test_timestamp_check_get_cutoff_with_non_int(self):
+        ts = '%Y.%m.%d'
+        tu = 'days'
+        v  = 'foo'
         timestamp = '2015.01.01'
         utc_now = datetime(2015, 1, 5)
         self.assertFalse(curator.timestamp_check(timestamp, timestring=ts,

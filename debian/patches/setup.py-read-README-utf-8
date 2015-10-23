@@ -1,4 +1,4 @@
-From ce5f356fd2a66e4937809e8839b9c43d7d4106ef Mon Sep 17 00:00:00 2001
+From 679a1e63a5debd21311809aa8e0f7ea5fba4d67e Mon Sep 17 00:00:00 2001
 From: Apollon Oikonomopoulos <apoikos@debian.org>
 Date: Thu, 8 Oct 2015 09:00:30 -0700
 Subject: Properly read unicode data from README.md for Python 3
@@ -15,7 +15,7 @@ Patch-Name: setup.py-read-README-utf-8
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index fd43444..629b2bc 100644
+index a089784..a77b61e 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -5,7 +5,11 @@ from setuptools import setup

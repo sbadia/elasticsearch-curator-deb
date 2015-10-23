@@ -263,6 +263,75 @@ class TestCLIAllocation(CuratorTestCase):
             self.client.indices.get_settings(index='my_index')['my_index']['settings']['index']['routing']['allocation']['require'][key]
         )
 
+    def test_allocation_all_indices_include(self):
+        self.create_index('my_index')
+        key = 'foo'
+        value = 'bar'
+        rule = key + '=' + value
+        allocation_type = 'include'
+        test = clicktest.CliRunner()
+        result = test.invoke(
+                    curator.cli,
+                    [
+                        '--logfile', os.devnull,
+                        '--host', host,
+                        '--port', str(port),
+                        'allocation', '--rule', rule,
+                        '--type', allocation_type,
+                        'indices',
+                        '--all-indices',
+                    ],
+                    obj={"filters":[]})
+        self.assertEquals(
+            value,
+            self.client.indices.get_settings(index='my_index')['my_index']['settings']['index']['routing']['allocation'][allocation_type][key]
+        )
+
+    def test_allocation_all_indices_exclude(self):
+        self.create_index('my_index')
+        key = 'foo'
+        value = 'bar'
+        rule = key + '=' + value
+        allocation_type = 'exclude'
+        test = clicktest.CliRunner()
+        result = test.invoke(
+                    curator.cli,
+                    [
+                        '--logfile', os.devnull,
+                        '--host', host,
+                        '--port', str(port),
+                        'allocation', '--rule', rule,
+                        '--type', allocation_type,
+                        'indices',
+                        '--all-indices',
+                    ],
+                    obj={"filters":[]})
+        self.assertEquals(
+            value,
+            self.client.indices.get_settings(index='my_index')['my_index']['settings']['index']['routing']['allocation'][allocation_type][key]
+        )
+
+    def test_allocation_fail_on_bad_type(self):
+        self.create_index('my_index')
+        key = 'foo'
+        value = 'bar'
+        rule = key + '=' + value
+        allocation_type = 'fail'
+        test = clicktest.CliRunner()
+        result = test.invoke(
+                    curator.cli,
+                    [
+                        '--logfile', os.devnull,
+                        '--host', host,
+                        '--port', str(port),
+                        'allocation', '--rule', rule,
+                        '--type', allocation_type,
+                        'indices',
+                        '--all-indices',
+                    ],
+                    obj={"filters":[]})
+        self.assertEqual(1, result.exit_code)
+
 class TestCLIBloom(CuratorTestCase):
     def test_bloom_cli(self):
         self.create_indices(5)
@@ -457,7 +526,7 @@ class TestCLIOptimize(CuratorTestCase):
                 body={"doc" + i :'TEST DOCUMENT'},
             )
             # This should force each doc to be in its own segment.
-            self.client.indices.flush(index="index_name", force=True, full=True)
+            self.client.indices.flush(index="index_name", force=True)
 
         test = clicktest.CliRunner()
         result = test.invoke(
@@ -716,7 +785,7 @@ class TestCLISnapshotSelection(CuratorTestCase):
                         '--all-snapshots',
                     ],
                     obj={"filters":[]})
-        self.assertEqual(1, result.exit_code)
+        self.assertEqual(0, result.exit_code)
     def test_snapshot_selection_show_filtered(self):
         self.create_repository()
         for i in ["1", "2", "3"]:
