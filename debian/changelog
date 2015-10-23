@@ -1,3 +1,18 @@
+elasticsearch-curator (3.2.3-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Mon, 20 Jul 2015 10:28:20 +0300
+
+elasticsearch-curator (3.2.0-1) unstable; urgency=medium
+
+  * New upstream release
+    + Mention breaking changes in debian/NEWS
+  * Depend on python-pkg-resources
+  * Refresh setup.py-read-README-utf-8 patch
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Fri, 10 Jul 2015 14:10:21 +0300
+
 elasticsearch-curator (2.1.2-1) unstable; urgency=low
 
   * Initial release (closes: #776791)
