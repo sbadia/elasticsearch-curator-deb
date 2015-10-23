@@ -67,7 +67,7 @@ def build_filter(
         if not timestring:
             logger.error("older_than and newer_than require timestring parameter")
             return {}
-        argdict = {  "groupname":groupname, "time_unit":time_unit,
+        argdict = { "groupname":groupname, "time_unit":time_unit,
                     "timestring": timestring, "value": value,
                     "method": kindOf }
         date_regex = get_date_regex(timestring)
@@ -280,6 +280,10 @@ def timestamp_check(timestamp, timestring=None, time_unit=None,
     """
     cutoff = get_cutoff(unit_count=value, time_unit=time_unit, utc_now=utc_now)
 
+    if not cutoff:
+        logger.error('No cutoff value.')
+        return False
+
     try:
         object_time = get_datetime(timestamp, timestring)
     except ValueError:
@@ -319,13 +323,18 @@ def filter_by_space(client, indices, disk_space=None, reverse=True):
     """
 
     def get_stat_list(stats):
-        retval = list(
-            (index_name, index_stats['index']['primary_size_in_bytes'])
-            for (index_name, index_stats) in stats['indices'].items()
-        )
+        retval = []
+        for (index_name, index_stats) in stats['indices'].items():
+            replica_count = client.indices.get_settings(index_name)[index_name]['settings']['index']['number_of_replicas']
+            size = "size_in_bytes" if int(replica_count) > 0 else "primary_size_in_bytes"
+            logger.debug('Index: {0}  Size: {1}'.format(index_name, index_stats['index'][size]))
+            retval.append((index_name, index_stats['index'][size]))
         return retval
 
-    if not disk_space:
+    # Ensure that disk_space is a float
+    if disk_space:
+        disk_space = float(disk_space)
+    else:
         logger.error("Mising value for disk_space.")
         return False
 

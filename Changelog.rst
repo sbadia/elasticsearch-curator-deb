@@ -3,6 +3,47 @@
 Changelog
 =========
 
+3.3.0 (31 August 2015)
+----------------------
+
+**Announcement**
+
+  * Curator is tested in Jenkins.  Each commit to the master branch is tested
+    with both Python versions 2.7.6 and 3.4.0 against each of the following
+    Elasticsearch versions:
+    * 1.7_nightly
+    * 1.6_nightly
+    * 1.7.0
+    * 1.6.1
+    * 1.5.1
+    * 1.4.4
+    * 1.3.9
+    * 1.2.4
+    * 1.1.2
+    * 1.0.3
+  * If you are using a version different from this, your results may vary.
+
+**General**
+
+  * Allocation type can now also be ``include`` or ``exclude``, in addition to the
+   the existing default ``require`` type. Add ``--type`` to the allocation command
+   to specify the type. #443 (steffo)
+
+  * Bump elasticsearch python module dependency to 1.6.0+ to enable synced_flush
+    API call. Reported in #447 (untergeek)
+
+  * Add SSL features, ``--ssl-no-validate`` and ``certificate`` to provide other
+    ways to validate SSL connections to Elasticsearch. #436 (untergeek)
+
+**Bug fixes**
+
+  * Delete by space was only reporting space used by primary shards.  Fixed to
+    show all space consumed.  Reported in #455 (untergeek)
+
+  * Update exit codes and messages for snapshot selection.  Reported in #452 (untergeek)
+
+  * Fix potential int/float casting issues. Reported in #465 (untergeek)
+
 3.2.3 (16 July 2015)
 --------------------
 
