@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -e
+
+# Configure and start elasticsearch
+echo "START_DAEMON=true" >> /etc/default/elasticsearch
+echo 'path.repo: ["/tmp"]' >> /etc/elasticsearch/elasticsearch.yml
+echo "Restarting Elasticsearch"
+invoke-rc.d --quiet elasticsearch restart
+
+# Wait until ES is up
+tries=0
+echo -n "Waiting for Elasticsearch to initialize"
+while ! curl -s -XGET 'http://localhost:9200/_cluster/health' >/dev/null; do
+	echo -n "."
+	tries=$(($tries + 1))
+	if [ $tries -gt 45 ]; then
+		echo
+		echo "Timed out waiting for elasticsearch to initialize"
+		exit 1
+	fi
+	sleep 1;
+done
+
+echo " done."
+echo "Running tests"
+
+# Run as the 'elasticsearch' user to ensure that the FS repo directories
+# created by the tests will be accessible by ES.
+cd test && su -s /bin/sh -c ./run_tests.py elasticsearch

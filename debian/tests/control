@@ -1,0 +1,17 @@
+Tests: curator
+Restrictions: needs-root,
+              allow-stderr,
+              breaks-testbed,
+              isolation-container
+Depends: elasticsearch,
+         curl,
+         python-elasticsearch-curator,
+         python-mock,
+         python-nose,
+         python-coverage,
+         python-nosexcover,
+         python3-elasticsearch-curator,
+         python3-mock,
+         python3-nose,
+         python3-coverage,
+         python3-nosexcover
