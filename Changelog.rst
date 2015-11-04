@@ -3,6 +3,23 @@
 Changelog
 =========
 
+3.4.0 (28 October 2015)
+-----------------------
+
+**General**
+
+  * API change in elasticsearch-py 1.7.0 prevented alias operations.  Fixed in
+    #486 (HonzaKral)
+  * During index selection you can now select only closed indices with ``--closed-only``.
+    Does not impact ``--all-indices`` Reported in #476. Fixed in #487 (Basster)
+  * API Changes in Elasticsearch 2.0.0 required some refactoring.  All tests pass
+    for ES versions 1.0.3 through 2.0.0-rc1.  Fixed in #488 (untergeek)
+  * es_repo_mgr now has access to the same SSL options from #462. #489 (untergeek)
+  * Logging improvements requested in #475. (untergeek)
+  * Added ``--quiet`` flag. #494 (untergeek)
+  * Fixed ``index_closed`` to work with AWS Elasticsearch. #499 (univerio)
+  * Acceptable versions of Elasticsearch-py module are 1.8.0 up to 2.1.0 (untergeek)
+
 3.3.0 (31 August 2015)
 ----------------------
 
