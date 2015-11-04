@@ -4,6 +4,7 @@ import time
 import re
 import sys
 import logging
+import json
 logger = logging.getLogger(__name__)
 
 def get_alias(client, alias):
@@ -14,7 +15,7 @@ def get_alias(client, alias):
     :arg alias: Alias name to operate on.
     :rtype: list of strings
     """
-    if client.indices.exists_alias(alias):
+    if client.indices.exists_alias(name=alias):
         return client.indices.get_alias(name=alias).keys()
     else:
         logger.error('Unable to find alias {0}.'.format(alias))
@@ -88,11 +89,23 @@ def index_closed(client, index_name):
     :arg index_name: The index name
     :rtype: bool
     """
-    index_metadata = client.cluster.state(
-        index=index_name,
-        metric='metadata',
-    )
-    return index_metadata['metadata']['indices'][index_name]['state'] == 'close'
+    # This workaround using the _cat API is for AWS Elasticsearch, since it does
+    # not allow users to poll the cluster state.  It may also be faster than
+    # using the cluster state.
+    if get_version(client) >= (1, 5, 0):
+        indices = client.cat.indices(index=index_name, format='json', h='status')
+        # This workaround is also for AWS, as the _cat API still returns text/plain
+        # even with ``format='json'``.
+        if not isinstance(indices, list):  # content-type: text/plain
+            indices = json.loads(indices)
+        (index_info,) = indices
+        return index_info['status'] == 'close'
+    else:
+        index_metadata = client.cluster.state(
+            index=index_name,
+            metric='metadata',
+        )
+        return index_metadata['metadata']['indices'][index_name]['state'] == 'close'
 
 def get_segmentcount(client, index_name):
     """
@@ -155,9 +168,10 @@ def optimized(client, index_name, max_num_segments=None):
     shards, segmentcount = get_segmentcount(client, index_name)
     logger.debug('Index {0} has {1} shards and {2} segments total.'.format(index_name, shards, segmentcount))
     if segmentcount > (shards * max_num_segments):
+        logger.debug('Flagging index {0} for optimization.'.format(index_name))
         return False
     else:
-        logger.info('Skipping index {0}: Already optimized.'.format(index_name))
+        logger.debug('Skipping index {0}: Already optimized.'.format(index_name))
         return True
 
 def get_version(client):
@@ -292,13 +306,28 @@ def prune_closed(client, indices):
     :arg indices: A list of indices to act on
     :rtype: list
     """
+    return prune_open_or_closed(client, indices, append_closed=False)
+
+def prune_opened(client, indices):
+    """
+    Return list of indices that are not open.
+
+    :arg client: The Elasticsearch client connection
+    :arg indices: A list of indices to act on
+    :rtype: list
+    """
+    return prune_open_or_closed(client, indices, append_closed=True)
+
+def prune_open_or_closed(client, indices, append_closed):
     indices = ensure_list(indices)
     retval = []
+    status = 'Closed' if append_closed else 'Opened'
     for idx in list(indices):
-        if not index_closed(client, idx):
+        if index_closed(client, idx) is append_closed:
             retval.append(idx)
+            logger.debug('Including index {0}: {1}.'.format(idx, status))
         else:
-            logger.info('Skipping index {0}: Closed.'.format(idx))
+            logger.debug('Skipping index {0}: {1}.'.format(idx, status))
     return sorted(retval)
 
 def prune_allocated(client, indices, key, value, allocation_type):
@@ -326,5 +355,6 @@ def prune_allocated(client, indices, key, value, allocation_type):
         if has_routing:
             logger.debug('Skipping index {0}: Allocation rule {1} is already applied for type {2}.'.format(idx, key + "=" + value, allocation_type))
         else:
+            logger.info('Flagging index {0} to have allocation rule {1} applied for type {2}.'.format(idx, key + "=" + value, allocation_type))
             retval.append(idx)
     return sorted(retval)
