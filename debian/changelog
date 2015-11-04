@@ -1,3 +1,13 @@
+elasticsearch-curator (3.4.0-1) unstable; urgency=medium
+
+  * New upstream release
+    + Elasticsearch 2.0 support
+  * Add B-D on python{,3}-click (Closes: #802962)
+  * Add DEP-8 tests
+  * d/watch: mangle upstream RC versions
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Wed, 04 Nov 2015 14:29:48 +0200
+
 elasticsearch-curator (3.3.0-1) unstable; urgency=medium
 
   * New upstream release.
