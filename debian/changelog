@@ -1,3 +1,12 @@
+elasticsearch-curator (3.4.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Bump standards to 3.9.7; no changes needed.
+  * d/control: Use HTTPS in Vcs-Git.
+  * d/copyright: extend to 2016.
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Fri, 12 Feb 2016 14:32:53 +0200
+
 elasticsearch-curator (3.4.0-1) unstable; urgency=medium
 
   * New upstream release
