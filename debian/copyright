@@ -4,12 +4,12 @@ Upstream-Contact: Aaron Mildenstein <aaron@mildensteins.com>
 Source: https://github.com/elasticsearch/curator
 
 Files: *
-Copyright: 2011-2015 Elasticsearch <http://www.elasticsearch.org>
+Copyright: 2011-2016 Elasticsearch <http://www.elasticsearch.org>
            and contributors.
 License: Apache-2.0
 
 Files: debian/*
-Copyright: 2015 Apollon Oikonomopoulos <apoikos@debian.org>
+Copyright: 2015-2016 Apollon Oikonomopoulos <apoikos@debian.org>
 License: Apache-2.0
 
 License: Apache-2.0
