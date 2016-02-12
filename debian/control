@@ -16,7 +16,7 @@ Build-Depends-Indep: libjs-jquery, python-sphinx (>= 1.0.7+dfsg-1~)
 Standards-Version: 3.9.7
 Homepage: https://github.com/elasticsearch/curator
 Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/elasticsearch-curator.git
-Vcs-Git: git://anonscm.debian.org/python-modules/packages/elasticsearch-curator.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/elasticsearch-curator.git
 X-Python-Version: >= 2.6
 X-Python3-Version: >= 3.2
 
