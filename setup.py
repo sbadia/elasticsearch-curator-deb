@@ -26,7 +26,7 @@ def get_version():
     return VERSION
 
 def get_install_requires():
-    res = ['elasticsearch>=1.8.0,<2.4.0' ]
+    res = ['elasticsearch>=2.3.0,<3.0.0' ]
     res.append('click>=3.3')
     return res
 
@@ -101,7 +101,6 @@ try:
     )
     ### end cx_Freeze ###
 except ImportError:
-    print('Unable to load cx_Freeze.  Cannot do \'build_exe\' or \'bdist_msi\'.\n')
     setup(
         name = "elasticsearch-curator",
         version = get_version(),

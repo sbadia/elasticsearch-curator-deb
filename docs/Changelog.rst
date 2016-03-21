@@ -3,6 +3,34 @@
 Changelog
 =========
 
+3.5.1 (21 March 2016)
+---------------------
+
+**Bug fixes**
+
+  * Add more logging information to snapshot delete method #582 (untergeek)
+  * Improve default timeout, logging, and exception handling for `seal` command
+    #583 (untergeek)
+  * Fix use of default snapshot name. #584 (untergeek)
+
+3.5.0 (16 March 2016)
+---------------------
+
+**General**
+
+  * Add support for the `--client-cert` and `--client-key` command line parameters
+    and client_cert and client_key parameters to the get_client() call. #520 (richm)
+
+**Bug fixes**
+
+  * Disallow users from creating snapshots with upper-case letters, which is not
+    permitted by Elasticsearch. #562 (untergeek)
+  * Remove `print()` command from ``setup.py`` as it causes issues with command-
+    line retrieval of ``--url``, etc. #568 (thib-ack)
+  * Remove unnecessary argument from `build_filter()` #530 (zzugg)
+  * Allow day of year filter to be made up with 1, 2 or 3 digits #578 (petitout)
+
+
 3.4.1 (10 February 2016)
 ------------------------
 
