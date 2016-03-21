@@ -109,6 +109,8 @@ def get_client(**kwargs):
     kwargs['use_ssl'] = False if not 'use_ssl' in kwargs else kwargs['use_ssl']
     kwargs['ssl_no_validate'] = False if not 'ssl_no_validate' in kwargs else kwargs['ssl_no_validate']
     kwargs['certificate'] = False if not 'certificate' in kwargs else kwargs['certificate']
+    kwargs['client_cert'] = False if not 'client_cert' in kwargs else kwargs['client_cert']
+    kwargs['client_key'] = False if not 'client_key' in kwargs else kwargs['client_key']
     logger.debug("kwargs = {0}".format(kwargs))
     master_only = kwargs.pop('master_only')
     if kwargs['use_ssl']:
@@ -143,11 +145,15 @@ def override_timeout(ctx):
     Override the default timeout for optimize and snapshot operations if the
     default value of 30 is provided at the command-line.
     """
-    timeout = 21600
-    if ctx.parent.info_name in ['optimize', 'snapshot']:
+    if ctx.parent.info_name in ['optimize', 'snapshot', 'seal']:
+        # Check for default timeout of 30s
         if ctx.parent.parent.params['timeout'] == 30:
-            logger.warn('Overriding default connection timeout.  New timeout: {0}'.format(timeout))
+            if ctx.parent.info_name in ['optimize', 'snapshot']:
+                timeout = 21600
+            elif ctx.parent.info_name == 'seal':
+                timeout = 180
             ctx.parent.parent.params['timeout'] = timeout
+            logger.info('Overriding default connection timeout for {0} action.  New timeout: {1}'.format(ctx.parent.info_name,timeout))
 
 def filter_callback(ctx, param, value):
     """
