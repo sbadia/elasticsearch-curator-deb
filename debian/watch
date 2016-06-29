@@ -1,4 +1,4 @@
 version=3
 
-opts="uversionmangle=s/(\.rc|a\d+)/~$1/" \
+opts="uversionmangle=s/(\.rc|[ab]\d+)/~$1/" \
   https://github.com/elasticsearch/curator/releases .*/archive/v(.*).tar.gz
