@@ -26,8 +26,9 @@ def get_version():
     return VERSION
 
 def get_install_requires():
-    res = ['elasticsearch>=2.3.0,<3.0.0' ]
+    res = ['elasticsearch>=2.3.0,<5.1.0' ]
     res.append('click>=3.3')
+    res.append('pyyaml>=3.10')
     return res
 
 try:
@@ -49,25 +50,12 @@ try:
         targetName = "curator",
         compress = True
     )
-    repo_mgr_exe = Executable(
-        "run_es_repo_mgr.py",
-        base=base,
-        targetName = "es_repo_mgr",
-        compress = True
-    )
 
     if sys.platform == "win32":
         curator_exe = Executable(
             "run_curator.py",
             base=base,
             targetName = "curator.exe",
-            compress = True,
-            icon = icon
-        )
-        repo_mgr_exe = Executable(
-            "run_es_repo_mgr.py",
-            base=base,
-            targetName = "es_repo_mgr.exe",
             compress = True,
             icon = icon
         )
@@ -83,21 +71,26 @@ try:
         license = "Apache License, Version 2.0",
         install_requires = get_install_requires(),
         keywords = "elasticsearch time-series indexed index-expiry",
-        packages = ["curator", "curator.api", "curator.cli"],
+        packages = ["curator"],
         include_package_data=True,
         entry_points = {
-            "console_scripts" : ["curator = curator.curator:main",
-                                 "es_repo_mgr = curator.es_repo_mgr:main"]
+            "console_scripts" : ["curator = curator.curator:main"]
         },
         classifiers=[
             "Intended Audience :: Developers",
             "Intended Audience :: System Administrators",
             "License :: OSI Approved :: Apache Software License",
+            "Operating System :: OS Independent",
+            "Programming Language :: Python",
+            "Programming Language :: Python :: 2.6",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3.4",
+            "Programming Language :: Python :: 3.5",
         ],
         test_suite = "test.run_tests.run_all",
-        tests_require = ["mock==1.0.1", "nose", "coverage", "nosexcover"],
+        tests_require = ["mock", "nose", "coverage", "nosexcover"],
         options = {"build_exe" : buildOptions},
-        executables = [curator_exe, repo_mgr_exe]
+        executables = [curator_exe]
     )
     ### end cx_Freeze ###
 except ImportError:
@@ -113,17 +106,22 @@ except ImportError:
         license = "Apache License, Version 2.0",
         install_requires = get_install_requires(),
         keywords = "elasticsearch time-series indexed index-expiry",
-        packages = ["curator", "curator.api", "curator.cli"],
+        packages = ["curator"],
         include_package_data=True,
         entry_points = {
-            "console_scripts" : ["curator = curator.curator:main",
-                                 "es_repo_mgr = curator.es_repo_mgr:main"]
+            "console_scripts" : ["curator = curator.curator:main"]
         },
         classifiers=[
             "Intended Audience :: Developers",
             "Intended Audience :: System Administrators",
             "License :: OSI Approved :: Apache Software License",
+            "Operating System :: OS Independent",
+            "Programming Language :: Python",
+            "Programming Language :: Python :: 2.6",
+            "Programming Language :: Python :: 2.7",
+            "Programming Language :: Python :: 3.4",
+            "Programming Language :: Python :: 3.5",
         ],
         test_suite = "test.run_tests.run_all",
-        tests_require = ["mock==1.0.1", "nose", "coverage", "nosexcover"]
+        tests_require = ["mock", "nose", "coverage", "nosexcover"]
     )

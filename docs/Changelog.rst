@@ -3,6 +3,276 @@
 Changelog
 =========
 
+4.0.0 (24 June 2016)
+--------------------
+
+It's official!  Curator 4.0.0 is released!
+
+**Breaking Changes**
+
+  * New and improved API!
+  * Command-line changes.  No more command-line args, except for ``--config``,
+    ``--actions``, and ``--dry-run``:
+
+      - ``--config`` points to a YAML client and logging configuration file.
+        The default location is ``~/.curator/curator.yml``
+      - ``--actions`` arg points to a YAML action configuration file
+      - ``--dry-run`` will simulate the action(s) which would have taken place,
+        but not actually make any changes to the cluster or its indices.
+
+**New Features**
+
+  * Snapshot restore is here!
+  * YAML configuration files.  Now a single file can define an entire batch of
+    commands, each with their own filters, to be performed in sequence.
+  * Sort by index age not only by index name (as with previous versions of
+    Curator), but also by index `creation_date`, or by calculations from the
+    Field Stats API on a timestamp field.
+  * Atomically add/remove indices from aliases! This is possible by way of the
+    new `IndexList` class and YAML configuration files.
+  * State of indices pulled and stored in `IndexList` instance.  Fewer API calls
+    required to serially test for open/close, `size_in_bytes`, etc.
+  * Filter by space now allows sorting by age!
+  * Experimental! Use AWS IAM credentials to sign requests to Elasticsearch.
+    This requires the end user to *manually* install the `requests_aws4auth`
+    python module.
+  * Optionally delete aliases from indices before closing.
+  * An empty index or snapshot list no longer results in an error if you set
+    ``ignore_empty_list`` to `True`.  If `True` it will still log that the
+    action was not performed, but will continue to the next action. If 'False'
+    it will log an ERROR and exit with code 1.
+
+**API**
+
+  * Updated API documentation
+  * Class: `IndexList`. This pulls all indices at instantiation, and you apply
+    filters, which are class methods.  You can iterate over as many filters as
+    you like, in fact, due to the YAML config file.
+  * Class: `SnapshotList`. This pulls all snapshots from the given repository at
+    instantiation, and you apply filters, which are class methods.  You can
+    iterate over as many filters as you like, in fact, due to the YAML config
+    file.
+  * Add `wait_for_completion` to Allocation and Replicas actions.  These will
+    use the client timeout, as set by default or `timeout_override`, to
+    determine how long to wait for timeout.  These are handled in batches of
+    indices for now.
+  * Allow `timeout_override` option for all actions.  This allows for different
+    timeout values per action.
+  * Improve API by giving each action its own `do_dry_run()` method.
+
+**General**
+
+  * Updated use documentation for Elastic main site.
+  * Include example files for ``--config`` and ``--actions``.
+
+4.0.0b2 (16 June 2016)
+----------------------
+
+**Second beta release of the 4.0 branch**
+
+**New Feature**
+
+  * An empty index or snapshot list no longer results in an error if you set
+    ``ignore_empty_list`` to `True`.  If `True` it will still log that the
+    action was not performed, but will continue to the next action. If 'False'
+    it will log an ERROR and exit with code 1. (untergeek)
+
+4.0.0b1 (13 June 2016)
+----------------------
+
+**First beta release of the 4.0 branch!**
+
+The release notes will be rehashing the new features in 4.0, rather than the
+bug fixes done during the alphas.
+
+**Breaking Changes**
+
+  * New and improved API!
+  * Command-line changes.  No more command-line args, except for ``--config``,
+    ``--actions``, and ``--dry-run``:
+
+      - ``--config`` points to a YAML client and logging configuration file.
+        The default location is ``~/.curator/curator.yml``
+      - ``--actions`` arg points to a YAML action configuration file
+      - ``--dry-run`` will simulate the action(s) which would have taken place,
+        but not actually make any changes to the cluster or its indices.
+
+**New Features**
+
+  * Snapshot restore is here!
+  * YAML configuration files.  Now a single file can define an entire batch of
+    commands, each with their own filters, to be performed in sequence.
+  * Sort by index age not only by index name (as with previous versions of
+    Curator), but also by index `creation_date`, or by calculations from the
+    Field Stats API on a timestamp field.
+  * Atomically add/remove indices from aliases! This is possible by way of the
+    new `IndexList` class and YAML configuration files.
+  * State of indices pulled and stored in `IndexList` instance.  Fewer API calls
+    required to serially test for open/close, `size_in_bytes`, etc.
+  * Filter by space now allows sorting by age!
+  * Experimental! Use AWS IAM credentials to sign requests to Elasticsearch.
+    This requires the end user to *manually* install the `requests_aws4auth`
+    python module.
+  * Optionally delete aliases from indices before closing.
+
+**API**
+
+  * Updated API documentation
+  * Class: `IndexList`. This pulls all indices at instantiation, and you apply
+    filters, which are class methods.  You can iterate over as many filters as
+    you like, in fact, due to the YAML config file.
+  * Class: `SnapshotList`. This pulls all snapshots from the given repository at
+    instantiation, and you apply filters, which are class methods.  You can
+    iterate over as many filters as you like, in fact, due to the YAML config
+    file.
+  * Add `wait_for_completion` to Allocation and Replicas actions.  These will
+    use the client timeout, as set by default or `timeout_override`, to
+    determine how long to wait for timeout.  These are handled in batches of
+    indices for now.
+  * Allow `timeout_override` option for all actions.  This allows for different
+    timeout values per action.
+  * Improve API by giving each action its own `do_dry_run()` method.
+
+**General**
+
+  * Updated use documentation for Elastic main site.
+  * Include example files for ``--config`` and ``--actions``.
+
+
+4.0.0a10 (10 June 2016)
+-----------------------
+
+**New Features**
+
+  * Snapshot restore is here!
+  * Optionally delete aliases from indices before closing. Fixes #644 (untergeek)
+
+**General**
+
+  * Add `wait_for_completion` to Allocation and Replicas actions.  These will
+    use the client timeout, as set by default or `timeout_override`, to
+    determine how long to wait for timeout.  These are handled in batches of
+    indices for now.
+  * Allow `timeout_override` option for all actions.  This allows for different
+    timeout values per action.
+
+**Bug Fixes**
+
+  * Disallow use of `master_only` if multiple hosts are used. Fixes #615
+    (untergeek)
+  * Fix an issue where arguments weren't being properly passed and populated.
+  * ForceMerge replaced Optimize in ES 2.1.0.
+  * Fix prune_nones to work with Python 2.6. Fixes #619 (untergeek)
+  * Fix TimestringSearch to work with Python 2.6. Fixes #622 (untergeek)
+  * Add language classifiers to ``setup.py``.  Fixes #640 (untergeek)
+  * Changed references to readthedocs.org to be readthedocs.io.
+
+4.0.0a9 (27 Apr 2016)
+---------------------
+
+**General**
+
+  * Changed `create_index` API to use kwarg `extra_settings` instead of `body`
+  * Normalized Alias action to use `name` instead of `alias`.  This simplifies
+    documentation by reducing the number of option elements.
+  * Streamlined some code
+  * Made `exclude` a filter element setting for all filters. Updated all
+    examples to show this.
+  * Improved documentation
+
+**New Features**
+
+  * Alias action can now accept `extra_settings` to allow adding filters, and/or
+    routing.
+
+
+4.0.0a8 (26 Apr 2016)
+---------------------
+
+**Bug Fixes**
+
+  * Fix to use `optimize` with versions of Elasticsearch < 5.0
+  * Fix missing setting in testvars
+
+
+4.0.0a7 (25 Apr 2016)
+---------------------
+
+**Bug Fixes**
+
+  * Fix AWS4Auth error.
+
+4.0.0a6 (25 Apr 2016)
+---------------------
+
+**General**
+
+  * Documentation updates.
+  * Improve API by giving each action its own `do_dry_run()` method.
+
+**Bug Fixes**
+
+  * Do not escape characters other than ``.`` and ``-`` in timestrings. Fixes
+    #602 (untergeek)
+
+** New Features**
+
+  * Added `CreateIndex` action.
+
+4.0.0a4 (21 Apr 2016)
+---------------------
+
+**Bug Fixes**
+
+  * Require `pyyaml` 3.10 or better.
+  * In the case that no `options` are in an action, apply the defaults.
+
+4.0.0a3 (21 Apr 2016)
+---------------------
+
+It's time for Curator 4.0 alpha!
+
+**Breaking Changes**
+
+  * New API! (again?!)
+  * Command-line changes.  No more command-line args, except for ``--config``,
+    ``--actions``, and ``--dry-run``:
+
+      - ``--config`` points to a YAML client and logging configuration file.
+        The default location is ``~/.curator/curator.yml``
+      - ``--actions`` arg points to a YAML action configuration file
+      - ``--dry-run`` will simulate the action(s) which would have taken place,
+        but not actually make any changes to the cluster or its indices.
+
+**General**
+
+  * Updated API documentation
+  * Updated use documentation for Elastic main site.
+  * Include example files for ``--config`` and ``--actions``.
+
+**New Features**
+
+  * Sort by index age not only by index name (as with previous versions of
+    Curator), but also by index `creation_date`, or by calculations from the
+    Field Stats API on a timestamp field.
+  * Class: `IndexList`. This pulls all indices at instantiation, and you apply
+    filters, which are class methods.  You can iterate over as many filters as
+    you like, in fact, due to the YAML config file.
+  * Class: `SnapshotList`. This pulls all snapshots from the given repository at
+    instantiation, and you apply filters, which are class methods.  You can
+    iterate over as many filters as you like, in fact, due to the YAML config
+    file.
+  * YAML configuration files.  Now a single file can define an entire batch of
+    commands, each with their own filters, to be performed in sequence.
+  * Atomically add/remove indices from aliases! This is possible by way of the
+    new `IndexList` class and YAML configuration files.
+  * State of indices pulled and stored in `IndexList` instance.  Fewer API calls
+    required to serially test for open/close, `size_in_bytes`, etc.
+  * Filter by space now allows sorting by age!
+  * Experimental! Use AWS IAM credentials to sign requests to Elasticsearch.
+    This requires the end user to *manually* install the `requests_aws4auth`
+    python module.
+
 3.5.1 (21 March 2016)
 ---------------------
 
@@ -12,6 +282,7 @@ Changelog
   * Improve default timeout, logging, and exception handling for `seal` command
     #583 (untergeek)
   * Fix use of default snapshot name. #584 (untergeek)
+
 
 3.5.0 (16 March 2016)
 ---------------------
@@ -330,7 +601,7 @@ Be sure to read the updated command-line specific docs in the
 [wiki](https://github.com/elasticsearch/curator/wiki) and change your
 command-line arguments accordingly.
 
-The API docs are still at http://curator.readthedocs.org.  Be sure to read the
+The API docs are still at http://curator.readthedocs.io.  Be sure to read the
 latest docs, or select the docs for 3.0.0.
 
 **General**
