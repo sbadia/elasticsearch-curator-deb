@@ -1,3 +1,13 @@
+elasticsearch-curator (4.0.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * The 'DebCamp' upload.
+  * Backport upstream commit 8c5a402e, restoring es_repo_mgr.
+  * Bump Standards to 3.9.8; no changes needed.
+  * d/watch: uversionmangle upstream's alphas and betas.
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Wed, 29 Jun 2016 21:02:32 +0200
+
 elasticsearch-curator (3.5.1-1) unstable; urgency=medium
 
   * New upstream release.
