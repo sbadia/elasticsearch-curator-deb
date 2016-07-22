@@ -9,9 +9,11 @@ Build-Depends: debhelper (>= 9),
                python-setuptools,
                python-click,
                python-elasticsearch (>= 1.0.0),
+               python-elasticsearch-doc,
                python3-all,
                python3-setuptools,
-               python3-click
+               python3-click,
+               python3-doc
 Build-Depends-Indep: libjs-jquery, python-sphinx (>= 1.0.7+dfsg-1~)
 Standards-Version: 3.9.8
 Homepage: https://github.com/elasticsearch/curator
