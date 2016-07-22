@@ -47,8 +47,10 @@ sys.path.insert(0, os.path.abspath('../'))
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx']
 
 intersphinx_mapping = {
-	'python': ('https://docs.python.org/3.5', None),
-	'elasticsearch': ('http://elasticsearch-py.readthedocs.io/en/2.3.0', None),
+	'python': ('https://docs.python.org/3.5',
+               '/usr/share/doc/python3-doc/html/objects.inv'),
+	'elasticsearch': ('http://elasticsearch-py.readthedocs.io/en/2.3.0',
+               '/usr/share/doc/python-elasticsearch-doc/html/objects.inv'),
 }
 
 autoclass_content = "both"
