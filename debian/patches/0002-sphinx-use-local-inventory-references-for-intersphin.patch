@@ -1,0 +1,30 @@
+From 752163e963ff2d81f863778315bb4433b45ac62b Mon Sep 17 00:00:00 2001
+From: Apollon Oikonomopoulos <apoikos@debian.org>
+Date: Fri, 22 Jul 2016 23:48:07 +0300
+Subject: sphinx: use local inventory references for intersphinx
+
+Note that we will not be making this conditional: we want the build to
+fail if intersphinx was to fetch inventory data from the internet.
+
+Closes: #830550
+---
+ docs/conf.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/docs/conf.py b/docs/conf.py
+index 6ff9369..95ffc43 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -47,8 +47,10 @@ sys.path.insert(0, os.path.abspath('../'))
+ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.intersphinx']
+ 
+ intersphinx_mapping = {
+-	'python': ('https://docs.python.org/3.5', None),
+-	'elasticsearch': ('http://elasticsearch-py.readthedocs.io/en/2.3.0', None),
++	'python': ('https://docs.python.org/3.5',
++               '/usr/share/doc/python3-doc/html/objects.inv'),
++	'elasticsearch': ('http://elasticsearch-py.readthedocs.io/en/2.3.0',
++               '/usr/share/doc/python-elasticsearch-doc/html/objects.inv'),
+ }
+ 
+ autoclass_content = "both"
