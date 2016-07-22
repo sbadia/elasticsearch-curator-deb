@@ -1,3 +1,12 @@
+elasticsearch-curator (4.0.1-2) unstable; urgency=medium
+
+  * Restrict intersphinx from downloading object inventory data (Closes:
+    #830550):
+    + sphinx: use local inventory references for intersphinx
+    + B-D on python3-doc and python-elasticsearch-doc
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Fri, 22 Jul 2016 23:51:01 +0300
+
 elasticsearch-curator (4.0.1-1) unstable; urgency=medium
 
   * New upstream release.
