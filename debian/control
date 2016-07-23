@@ -24,6 +24,7 @@ X-Python3-Version: >= 3.2
 
 Package: elasticsearch-curator
 Architecture: all
+Section: admin
 Depends: ${misc:Depends}, ${python:Depends}, python-elasticsearch-curator (= ${binary:Version}),
          python-pkg-resources
 Description: command-line tool for managing Elasticsearch time-series indices
