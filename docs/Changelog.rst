@@ -3,6 +3,101 @@
 Changelog
 =========
 
+4.0.6 (15 August 2016)
+----------------------
+
+**Bug Fixes**
+
+  * Update old calls used with ES 1.x to reflect changes in 2.x+. This was
+    necessary to work with Elasticsearch 5.0.0-alpha5. Fixed in #728 (untergeek)
+
+**Doc Fixes**
+
+  * Add section detailing that the value of a ``value`` filter element should be
+    encapsulated in single quotes. Reported in #726. (untergeek)
+
+4.0.5 (3 August 2016)
+---------------------
+
+**Bug Fixes**
+
+  * Fix incorrect variable name for AWS Region reported in #679 (basex)
+  * Fix ``filter_by_space()`` to not fail when index age metadata is not
+    present.  Indices without the appropriate age metadata will instead be
+    excluded, with a debug-level message. Reported in #724 (untergeek)
+
+**Doc Fixes**
+
+  * Fix documentation for the space filter and the source filter element.
+
+4.0.4 (1 August 2016)
+---------------------
+
+**Bug Fixes**
+
+  * Fix incorrect variable name in Allocation action. #706 (lukewaite)
+  * Incorrect error message in ``create_snapshot_body`` reported in #711
+    (untergeek)
+  * Test for empty index list object should happen in action initialization for
+    snapshot action. Discovered in #711. (untergeek)
+
+**Doc Fixes**
+
+  * Add menus to asciidoc chapters #704 (untergeek)
+  * Add pyyaml dependency #710 (dtrv)
+
+4.0.3 (22 July 2016)
+--------------------
+
+**General**
+
+  * 4.0.2 didn't work for ``pip`` installs due to an omission in the
+    MANIFEST.in file.  This came up during release testing, but before the
+    release was fully published. As the release was never fully published, this
+    should not have actually affected anyone.
+
+**Bug Fixes**
+
+  * These are the same as 4.0.2, but it was never fully released.
+  * All default settings are now values returned from functions instead of
+    constants.  This was resulting in settings getting stomped on. New test
+    addresses the original complaint.  This removes the need for ``deepcopy``.
+    See issue #687 (untergeek)
+  * Fix ``host`` vs. ``hosts`` issue in ``get_client()`` rather than the
+    non-functional function in ``repomgrcli.py``.
+  * Update versions being tested.
+  * Community contributed doc fixes.
+  * Reduced logging verbosity by making most messages debug level. #684
+    (untergeek)
+  * Fixed log whitelist behavior (and switched to blacklisting instead).
+    Default behavior will now filter traffic from the ``elasticsearch`` and
+    ``urllib3`` modules.
+  * Fix Travis CI testing to accept some skipped tests, as needed. #695
+    (untergeek)
+  * Fix missing empty index test in snapshot action. #682 (sherzberg)
+
+4.0.2 (22 July 2016)
+--------------------
+
+**Bug Fixes**
+
+  * All default settings are now values returned from functions instead of
+    constants.  This was resulting in settings getting stomped on. New test
+    addresses the original complaint.  This removes the need for ``deepcopy``.
+    See issue #687 (untergeek)
+  * Fix ``host`` vs. ``hosts`` issue in ``get_client()`` rather than the
+    non-functional function in ``repomgrcli.py``.
+  * Update versions being tested.
+  * Community contributed doc fixes.
+  * Reduced logging verbosity by making most messages debug level. #684
+    (untergeek)
+  * Fixed log whitelist behavior (and switched to blacklisting instead).
+    Default behavior will now filter traffic from the ``elasticsearch`` and
+    ``urllib3`` modules.
+  * Fix Travis CI testing to accept some skipped tests, as needed. #695
+    (untergeek)
+  * Fix missing empty index test in snapshot action. #682 (sherzberg)
+
 4.0.1 (1 July 2016)
 -------------------
 

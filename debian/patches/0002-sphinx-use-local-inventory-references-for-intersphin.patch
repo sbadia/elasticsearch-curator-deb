@@ -1,4 +1,4 @@
-From 752163e963ff2d81f863778315bb4433b45ac62b Mon Sep 17 00:00:00 2001
+From 15d9fedb2a140c523475824c9d45e91a02bdccb8 Mon Sep 17 00:00:00 2001
 From: Apollon Oikonomopoulos <apoikos@debian.org>
 Date: Fri, 22 Jul 2016 23:48:07 +0300
 Subject: sphinx: use local inventory references for intersphinx
