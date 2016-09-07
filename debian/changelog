@@ -1,3 +1,10 @@
+elasticsearch-curator (4.0.6-1) unstable; urgency=medium
+
+  * New upstream release
+  * Set elasticsearch-curator's Section to admin (Closes: #832206)
+
+ -- Apollon Oikonomopoulos <apoikos@debian.org>  Wed, 07 Sep 2016 15:30:02 +0300
+
 elasticsearch-curator (4.0.1-2) unstable; urgency=medium
 
   * Restrict intersphinx from downloading object inventory data (Closes:
