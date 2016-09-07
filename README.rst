@@ -9,6 +9,32 @@ Have indices in Elasticsearch? This is the tool for you!
 Like a museum curator manages the exhibits and collections on display,
 Elasticsearch Curator helps you curate, or manage your indices.
 
+Compatibility Matrix
+=======
+
++--------+----------+----------+----------+
+|Version | ES 1.x   | ES 2.x   | ES 5.x   |
++========+==========+==========+==========+
+|    3   |    yes   |     yes  |     no   |
++--------+----------+----------+----------+
+|    4   |    no    |     yes  |     yes  |
++--------+----------+----------+----------+
+
+It is important to note that Curator 4 will not work with indices created in
+versions of Elasticsearch older than 1.4 (if they have been subsequently
+re-indexed, they will work).  This is because those older indices lack index
+metadata that Curator 4 requires.  Curator 4 will simply exclude any such
+indices from being acted on, and you will get a warning message like the
+following:
+
+::
+
+    2016-07-31 10:36:17,423 WARNING Index: YOUR_INDEX_NAME has no
+    "creation_date"! This implies that the index predates Elasticsearch v1.4.
+    For safety, this index will be removed from the actionable list.
+
+
+
 Build Status
 ------------
 
