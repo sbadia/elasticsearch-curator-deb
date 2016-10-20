@@ -10,7 +10,7 @@ Like a museum curator manages the exhibits and collections on display,
 Elasticsearch Curator helps you curate, or manage your indices.
 
 Compatibility Matrix
-=======
+====================
 
 +--------+----------+----------+----------+
 |Version | ES 1.x   | ES 2.x   | ES 5.x   |
@@ -33,9 +33,9 @@ following:
     "creation_date"! This implies that the index predates Elasticsearch v1.4.
     For safety, this index will be removed from the actionable list.
 
-It is also important to note that Curator 4 requires access to the 
-``/_cluster/state/metadata`` endpoint.  Forks of Elasticsearch which do not 
-support this endpoint (such as AWS ES, see #717) *will not* be able to use 
+It is also important to note that Curator 4 requires access to the
+``/_cluster/state/metadata`` endpoint.  Forks of Elasticsearch which do not
+support this endpoint (such as AWS ES, see #717) *will not* be able to use
 Curator version 4.
 
 Build Status
@@ -50,6 +50,8 @@ Build Status
 +--------+----------+
 | 4.0    | |4_0|    |
 +--------+----------+
+| 4.1    | |4_1|    |
++--------+----------+
 
 PyPI: |pypi_pkg|
 
@@ -59,13 +61,15 @@ PyPI: |pypi_pkg|
     :target: https://travis-ci.org/elastic/curator
 .. |4_0| image:: https://travis-ci.org/elastic/curator.svg?branch=4.0
     :target: https://travis-ci.org/elastic/curator
+.. |4_1| image:: https://travis-ci.org/elastic/curator.svg?branch=4.1
+    :target: https://travis-ci.org/elastic/curator
 .. |pypi_pkg| image:: https://badge.fury.io/py/elasticsearch-curator.svg
     :target: https://badge.fury.io/py/elasticsearch-curator
 
 `Curator API Documentation`_
 ----------------------------
 
-Version 4.0 of Curator ships with both an API and a wrapper script (which is
+Version 4 of Curator ships with both an API and a wrapper script (which is
 actually defined as an entry point).  The API allows you to write your own
 scripts to accomplish similar goals, or even new and different things with the
 `Curator API`_, and the `Elasticsearch Python API`_.
@@ -143,10 +147,59 @@ integration tests against it. This will delete all the data stored there! You
 can use the env variable ``TEST_ES_SERVER`` to point to a different instance
 (for example, 'otherhost:9203').
 
+Binary Executables
+------------------
+
+The combination of `setuptools <https://github.com/pypa/setuptools>`_ and
+`cx_Freeze <http://cx-freeze.sourceforge.net>`_ allows for Curator to be
+compiled into binary packages.  These consist of a binary file placed in a
+directory which contains all the libraries required to run it.
+
+In order to make a binary package you must manually install the ``cx_freeze``
+python module.  You can do this via ``pip``, or ``python setup.py install``,
+or by package, if such exists for your platform.  In order to make it compile on
+recent Debian/Ubuntu platforms, a patch had to be applied to the ``setup.py``
+file in the extracted folder.  This patch file is in the ``unix_packages``
+directory in this repository.
+
+With ``cx_freeze`` installed, building a binary package is as simple as running
+``python setup.py build_exe``.  In Linux distributions, the results will be in
+the ``build`` directory, in a subdirectory labelled
+``exe.linux-x86_64-${PYVER}``, where `${PYVER}` is the current major/minor
+version of Python, e.g. ``2.7``.  This directory can be renamed as desired.
+
+Other entry-points that are defined in the ``setup.py`` file, such as
+``es_repo_mgr``, will also appear in this directory.
+
+The process is identical for building the binary package for Windows.  It must
+be run from a Windows machine with all dependencies installed.  Executables in
+Windows will have the ``.exe`` suffix attached.  The directory in ``build`` will
+be named ``exe.win-amd64-${PYVER}``, where `${PYVER}` is the current major/minor
+version of Python, e.g. ``2.7``.  This directory can be renamed as desired.
+
+In Windows, cx_Freeze also allows for building rudimentary MSI installers.  This
+can be done by invoking ``python setup.py bdist_msi``.  The MSI fill will be in
+the ``dist`` directory, and will be named
+``elasticsearch-curator-#.#.#-amd64.msi``, where the major, minor, and patch
+version numbers are substituted accordingly.  One drawback to this rudimentary
+MSI is that it does not allow updates to be installed on top of the existing
+installation.  You must uninstall the old version before installing the newer
+one.
+
+The ``unix_packages`` directory contains the ``build_packages.sh`` script used
+to generate the packages for the Curator YUM and APT repositories.  The
+``Vagrant`` directory has the Vagrantfiles used in conjunction with the
+``build_packages.sh`` script.  If you wish to use this method on your own, you
+must ensure that the shared folders exist.  ``/curator_packages`` is where the
+packages will be placed after building.  ``/curator_source`` is the path to the
+Curator source code, so that the ``build_packages.sh`` script can be called from
+there.  The ``build_packages.sh`` script does `not` use the local source code,
+but rather pulls the version specified as an argument directly from GitHub.
+
 Versioning
 ----------
 
-Version 4.0 of Curator is the current ``master`` branch.  It supports
+Version 4 of Curator is the current ``master`` branch.  It supports
 Elasticsearch versions 2.0 through 5.0.  This is the first release of Curator
 that is not fully reverse compatible.
 
