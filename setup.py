@@ -5,11 +5,7 @@ from setuptools import setup
 
 # Utility function to read from file.
 def fread(fname):
-    try:
-        text = open(os.path.join(os.path.dirname(__file__), fname), encoding='utf-8').read()
-    except TypeError:
-        text = open(os.path.join(os.path.dirname(__file__), fname)).read()
-    return text
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 def get_version():
     VERSIONFILE="curator/_version.py"
