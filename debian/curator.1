@@ -1,14 +1,9 @@
-.TH CURATOR "1" "February 2015" "curator 2.1.2" "User Commands"
+.TH CURATOR "1" "December 2016" "curator 4.2" "User Commands"
 .SH NAME
 \fBcurator\fP \- Elasticsearch time-series index manager
 
 .SH SYNOPSIS
-curator [\-h] [\-v] [\-\-host HOST] [\-\-url_prefix URL_PREFIX]
-[\-\-port PORT] [\-\-ssl] [\-\-auth AUTH]
-[\-\-timeout TIMEOUT] [\-\-master\-only] [\-n] [\-D]
-[\-\-loglevel LOG_LEVEL] [\-\-logfile LOG_FILE]
-[\-\-logformat LOGFORMAT]
-\fICOMMAND\fP [\fICOMMAND_OPTS\fP] \fIARGUMENTS\fP
+curator [\-\-config CONFIG.YML] [\-\-dry\-run] ACTION_FILE.YML
 
 .SH DESCRIPTION
 \fBcurator\fP helps manage Elasticsearch time-series indices. It provides an
@@ -24,83 +19,36 @@ show program usage and exit
 \fB\-v\fR, \fB\-\-version\fR
 show program's version number and exit
 .TP
-\fB\-\-host\fR HOST
-Elasticsearch host. Default: localhost
+\fB\-\-config\fR PATH
+Path to configuration file. Default: ~/.curator/curator.yml
 .TP
-\fB\-\-url_prefix\fR URL_PREFIX
-Elasticsearch HTTP url prefix. Default: none
-.TP
-\fB\-\-port\fR PORT
-Elasticsearch port. Default: 9200
-.TP
-\fB\-\-ssl\fR
-Connect to Elasticsearch through SSL. Default: false
-.TP
-\fB\-\-auth\fR AUTH
-Use Basic Authentication ex: user:pass Default: None
-.TP
-\fB\-\-timeout\fR TIMEOUT
-Connection timeout in seconds. Default: 30
-.TP
-\fB\-\-master\-only\fR
-Verify that the node is the elected master before
-continuing
-.TP
-\fB\-n\fR, \fB\-\-dry\-run\fR
-If true, does not perform any changes to the
-Elasticsearch indices.
-.TP
-\fB\-D\fR, \fB\-\-debug\fR
-Debug mode
-.TP
-\fB\-\-loglevel\fR LOG_LEVEL
-Log level
-.TP
-\fB\-\-logfile\fR LOG_FILE
-log file
-.TP
-\fB\-\-logformat\fR LOGFORMAT
-Log output format [default|logstash]. Default: default
+\fB\-\-dry\-run\fR
+Do not perform any changes.
 
-.SH COMMANDS
-Each of the following commands accepts a number of options and positional
-arguments. Run \fBcurator\fP \fICOMMAND\fP \fB\-\-help\fR for command\-specific
-help. Available commands are:
+ACTION_FILE is a YAML curator action file. For more information on action files, consult
+.BR /usr/share/doc/elasticsearch-curator/reference.txt.gz .
+
+.SH "EXIT CODES"
+Exit codes will indicate success or failure.
+
 .TP
-.B alias
-Aliasing operations
+0
+Success
 .TP
-.B allocation
-Apply required index routing allocation rule
+1
+Failure
 .TP
-.B bloom
-Disable bloom filter cache for indices
-.TP
-.B close
-Close indices
-.TP
-.B delete
-Delete indices
-.TP
-.B optimize
-Optimize indices
-.TP
-.B replicas
-Change replica count of indices
-.TP
-.B show
-Show indices or snapshots
-.TP
-.B snapshot
-Take snapshots of indices (Backup)
+-1
+An exception was raised that does not result in an exit code of 1
 
 .SH "SEE ALSO"
-.BR es_repo_mgr (1)
+.BR es_repo_mgr (1) "" ", " curator_cli (1)
 
 Additional documentation for
 .B curator
 can be found at the project's wiki at
-https://github.com/elasticsearch/curator/wiki.
+https://github.com/elasticsearch/curator/wiki and (on Debian systems) under
+.BR /usr/share/doc/elasticsearch-curator/reference.txt.gz .
 
 .SH AUTHOR
 \fBcurator\fP was originally written by Aaron Mildenstein
@@ -114,4 +62,4 @@ the Debian project (but may be used by others).
 This software is released under the Apache License, Version 2.0. See
 /usr/share/doc/elasticsearch-curator/copyright for more details.
 
-Copyright 2011-2015 Elasticsearch and contributors.
+Copyright 2011-2016 Elasticsearch and contributors.

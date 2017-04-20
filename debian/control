@@ -4,6 +4,7 @@ Uploaders: Apollon Oikonomopoulos <apoikos@debian.org>
 Section: python
 Priority: optional
 Build-Depends: debhelper (>= 9),
+               w3m,
                dh-python,
                python-all,
                python-setuptools,
@@ -13,7 +14,16 @@ Build-Depends: debhelper (>= 9),
                python3-all,
                python3-setuptools,
                python3-click,
-               python3-doc
+               python3-doc,
+               python-yaml,
+               python3-yaml,
+               python-voluptuous,
+               python3-voluptuous,
+               asciidoc,
+               docbook-xml,
+               docbook-xsl,
+               xsltproc,
+               libxml2-utils
 Build-Depends-Indep: libjs-jquery, python-sphinx (>= 1.0.7+dfsg-1~)
 Standards-Version: 3.9.8
 Homepage: https://github.com/elasticsearch/curator

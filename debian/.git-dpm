@@ -1,11 +1,11 @@
 # see git-dpm(1) from git-dpm package
-16da01da01d8d5a387e85941cba8b696c149e4ba
-16da01da01d8d5a387e85941cba8b696c149e4ba
-546a322ecfac066daf70e100b263f127f2476c78
-546a322ecfac066daf70e100b263f127f2476c78
-elasticsearch-curator_4.1.0.orig.tar.gz
-2682e9a47dbae6b607ed8859189dfe205b0588b4
-123238
+ff4fa393ed74b77009ec8a11ed3157ad3e0fc5ed
+ff4fa393ed74b77009ec8a11ed3157ad3e0fc5ed
+0853854035a54106dd650b5d39fbd1691e4712a6
+0853854035a54106dd650b5d39fbd1691e4712a6
+elasticsearch-curator_4.2.5.orig.tar.gz
+05cc71b83f98033bebb4b1ecd792e97408da6b95
+227607
 debianTag="debian/%e%v"
 patchedTag="patched/%e%v"
 upstreamTag="upstream/%e%u"

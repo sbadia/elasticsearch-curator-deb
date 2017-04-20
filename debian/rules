@@ -11,6 +11,8 @@ override_dh_installchangelogs:
 override_dh_auto_build:
 	dh_auto_build
 	PYTHONPATH=. sphinx-build -b html -N docs/ docs/.build/html
+	a2x -d book --format text docs/asciidoc/index.asciidoc
+	mv docs/asciidoc/index.text docs/asciidoc/reference.txt
 
 override_dh_clean:
 	rm -rf docs/.build
