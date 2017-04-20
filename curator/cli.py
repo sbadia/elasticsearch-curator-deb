@@ -17,6 +17,7 @@ CLASS_MAP = {
     'alias' :  Alias,
     'allocation' : Allocation,
     'close' : Close,
+    'cluster_routing' : ClusterRouting,
     'create_index' : CreateIndex,
     'delete_indices' : DeleteIndices,
     'delete_snapshots' : DeleteSnapshots,
@@ -76,7 +77,7 @@ def process_action(client, config, **kwargs):
             removes = IndexList(client)
             removes.iterate_filters(config['remove'])
             action_obj.remove(removes)
-    elif action == 'create_index':
+    elif action in [ 'cluster_routing', 'create_index' ]:
         action_obj = action_class(client, **mykwargs)
     elif action == 'delete_snapshots' or action == 'restore':
         logger.debug('Running "{0}"'.format(action))
