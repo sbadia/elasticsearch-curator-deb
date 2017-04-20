@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 
 class Alias(object):
-    def __init__(self, name=None, extra_settings={}):
+    def __init__(self, name=None, extra_settings={}, **kwargs):
         """
         Define the Alias object.
 
@@ -32,7 +32,7 @@ class Alias(object):
         self.extra_settings = extra_settings
         self.loggit  = logging.getLogger('curator.actions.alias')
 
-    def add(self, ilo):
+    def add(self, ilo, warn_if_no_indices=False):
         """
         Create `add` statements for each index in `ilo` for `alias`, then
         append them to `actions`.  Add any `extras` that may be there.
@@ -43,7 +43,19 @@ class Alias(object):
         verify_index_list(ilo)
         if not self.client:
             self.client = ilo.client
-        ilo.empty_list_check()
+        try:
+            ilo.empty_list_check()
+        except NoIndices:
+            # Add a warning if there are no indices to add, if so set in options
+            if warn_if_no_indices:
+                self.loggit.warn(
+                    'No indices found after processing filters. '
+                    'Nothing to add to {0}'.format(self.name)
+                )
+                return
+            else:
+                # Re-raise the NoIndices so it will behave as before
+                raise NoIndices
         for index in ilo.working_list():
             self.loggit.debug(
                 'Adding index {0} to alias {1} with extra settings '
@@ -53,7 +65,7 @@ class Alias(object):
             add_dict['add'].update(self.extra_settings)
             self.actions.append(add_dict)
 
-    def remove(self, ilo):
+    def remove(self, ilo, warn_if_no_indices=False):
         """
         Create `remove` statements for each index in `ilo` for `alias`,
         then append them to `actions`.
@@ -63,12 +75,37 @@ class Alias(object):
         verify_index_list(ilo)
         if not self.client:
             self.client = ilo.client
-        ilo.empty_list_check()
+        try:
+            ilo.empty_list_check()
+        except NoIndices:
+            # Add a warning if there are no indices to add, if so set in options
+            if warn_if_no_indices:
+                self.loggit.warn(
+                    'No indices found after processing filters. '
+                    'Nothing to remove from {0}'.format(self.name)
+                )
+                return
+            else:
+                # Re-raise the NoIndices so it will behave as before
+                raise NoIndices
+        aliases = self.client.indices.get_aliases()
         for index in ilo.working_list():
-            self.loggit.debug(
-                'Removing index {0} from alias {1}'.format(index, self.name))
-            self.actions.append(
-                { 'remove' : { 'index' : index, 'alias': self.name } })
+            if index in aliases:
+                self.loggit.debug(
+                    'Index {0} in get_aliases output'.format(index))
+                # Only remove if the index is associated with the alias
+                if self.name in aliases[index]['aliases']:
+                    self.loggit.debug(
+                        'Removing index {0} from alias '
+                        '{1}'.format(index, self.name)
+                    )
+                    self.actions.append(
+                        { 'remove' : { 'index' : index, 'alias': self.name } })
+                else:
+                    self.loggit.debug(
+                        'Can not remove: Index {0} is not associated with alias'
+                        ' {1}'.format(index, self.name)
+                    )
 
     def body(self):
         """
@@ -194,10 +231,17 @@ class Allocation(object):
                         'Waiting for shards to complete relocation for indices:'
                         ' {0}'.format(to_csv(l))
                     )
-                    self.client.cluster.health(index=to_csv(l),
-                        level='indices', wait_for_relocating_shards=0,
-                        timeout=self.timeout,
-                    )
+                    version = get_version(self.client)
+                    if version >= (5,1,0):
+                        self.client.cluster.health(index=to_csv(l),
+                            level='indices', wait_for_no_relocating_shards=True,
+                            timeout=self.timeout,
+                        )
+                    else:
+                        self.client.cluster.health(index=to_csv(l),
+                            level='indices', wait_for_relocating_shards=0,
+                            timeout=self.timeout,
+                        )
         except Exception as e:
             report_failure(e)
 
