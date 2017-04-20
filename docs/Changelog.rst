@@ -3,7 +3,30 @@
 Changelog
 =========
 
+4.3.0 (10 April 2017)
+-------------
+
+**New Features**
+
+  * Added ``warn_if_no_indices`` option for ``alias`` action in response to
+    #883.  Using this option will permit the ``alias`` add or remove to continue
+    with a logged warning, even if the filters result in a NoIndices condition.
+    Use with care.
+
+**Bug Fixes**
+
+  * Check if an index is in an alias before attempting to delete it from the
+    alias.  Issue raised in #887. (untergeek)
+  * Fix allocation issues when using Elasticsearch 5.1+. Issue raised in #871
+    (untergeek)
+
+**Documentation**
+
+  * Add missing repository arg to auto-gen API docs. Reported in #888
+    (untergeek)
+
 4.2.6 (27 January 2016)
+-----------------------
 
 **General**
 
