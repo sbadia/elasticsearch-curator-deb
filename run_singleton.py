@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-"""Wrapper for running es_repo_mgr from source."""
-
-from curator.repomgrcli import repo_mgr_cli
+"""Wrapper for running singletons from source."""
+import click
+from curator.singletons import cli
 
 if __name__ == '__main__':
     try:
-        repo_mgr_cli()
+        cli(obj={})
     except Exception as e:
         if type(e) == type(RuntimeError()):
             if 'ASCII' in str(e):
@@ -21,11 +21,11 @@ the above unicode definitions are acceptable.
 To set the locale to be unicode, try:
 
 $ export LC_ALL=en_US.utf8
-$ es_repo_mgr [ARGS]
+$ curator_cli [ARGS]
 
 Alternately, you should be able to specify the locale on the command-line:
 
-$ LC_ALL=en_US.utf8 es_repo_mgr [ARGS]
+$ LC_ALL=en_US.utf8 curator_cli [ARGS]
 
 Be sure to substitute your unicode variant for en_US.utf8
 

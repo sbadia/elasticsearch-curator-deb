@@ -87,7 +87,7 @@ def verify_client_object(test):
     if str(type(test)) == "<class 'mock.Mock'>" or \
         str(type(test)) == "<class 'mock.mock.Mock'>":
         pass
-    elif not type(test) == type(elasticsearch.Elasticsearch()):
+    elif not isinstance(test, elasticsearch.Elasticsearch):
         raise TypeError(
             'Not a client object. Type: {0}'.format(type(test))
         )
@@ -174,13 +174,6 @@ def get_datetime(index_timestamp, timestring):
         if not '%d' in timestring:
             timestring += '%d'
             index_timestamp += '1'
-    # logger.debug(
-    #     'index_timestamp: {0}, timestring: {1}, return value: '
-    #     '{2}'.format(
-    #         index_timestamp, timestring,
-    #         datetime.strptime(index_timestamp, timestring)
-    #     )
-    # )
     return datetime.strptime(index_timestamp, timestring)
 
 def fix_epoch(epoch):
@@ -381,6 +374,24 @@ def get_indices(client):
             client.indices.get_settings(
             index='_all', params={'expand_wildcards': 'open,closed'})
         )
+        version_number = get_version(client)
+        logger.debug(
+            'Detected Elasticsearch version '
+            '{0}'.format(".".join(map(str,version_number)))
+        )
+        # This hack ONLY works if you're using 2.4.2 or higher, but is unneeded
+        # if you are using 5.0 or higher.  See issue #826
+        if version_number >= (2, 4, 2) \
+            and version_number < (5, 0, 0):
+            logger.debug('Using Elasticsearch >= 2.4.2 < 5.0.0')
+            if client.indices.exists(index='.security'):
+                logger.debug(
+                    'Found the ".security" index.  '
+                    'Adding to list of all indices'
+                )
+                # Double check to see if it's there before appending
+                if not '.security' in indices:
+                    indices.append('.security')
         logger.debug("All indices: {0}".format(indices))
         return indices
     except Exception as e:
@@ -456,7 +467,7 @@ def get_client(**kwargs):
     ``/_cluster/state/metadata`` endpoint.  So long as this endpoint does not
     function in AWS ES, the client will not be able to use
     :class:`curator.indexlist.IndexList`, which is the backbone of Curator 4
-    
+
     Return an :class:`elasticsearch.Elasticsearch` client object using the
     provided parameters. Any of the keyword arguments the
     :class:`elasticsearch.Elasticsearch` client object can receive are valid,
@@ -532,13 +543,18 @@ def get_client(**kwargs):
             if kwargs['certificate']:
                 kwargs['verify_certs'] = True
                 kwargs['ca_certs'] = kwargs['certificate']
-            else: # Try to use certifi certificates:
-                try:
+            else: # Try to use bundled certifi certificates
+                if getattr(sys, 'frozen', False):
+                    # The application is frozen (compiled)
+                    datadir = os.path.dirname(sys.executable)
+                    kwargs['verify_certs'] = True
+                    kwargs['ca_certs'] = os.path.join(datadir, 'cacert.pem')
+                else:
+                    # Use certifi certificates via certifi.where():
                     import certifi
                     kwargs['verify_certs'] = True
                     kwargs['ca_certs'] = certifi.where()
-                except ImportError:
-                    logger.warn('Unable to verify SSL certificate.')
+
     try:
         from requests_aws4auth import AWS4Auth
         kwargs['aws_key'] = False if not 'aws_key' in kwargs \
@@ -1124,8 +1140,8 @@ def validate_actions(data):
                     )
             # Add/Remove here
             clean_config[action_id].update(add_remove)
-        elif current_action == 'create_index':
-            # create_index should not have a filters
+        elif current_action in [ 'cluster_routing', 'create_index' ]:
+            # neither cluster_routing nor create_index should have filters
             pass
         else: # Filters key only appears in non-alias actions
             valid_filters = SchemaCheck(

@@ -12,13 +12,13 @@ Elasticsearch Curator helps you curate, or manage your indices.
 Compatibility Matrix
 ====================
 
-+--------+----------+----------+----------+
-|Version | ES 1.x   | ES 2.x   | ES 5.x   |
-+========+==========+==========+==========+
-|    3   |    yes   |     yes  |     no   |
-+--------+----------+----------+----------+
-|    4   |    no    |     yes  |     yes  |
-+--------+----------+----------+----------+
++--------+----------+------------+----------+------------+----------+
+|Version | ES 1.x   | AWS ES 1.x | ES 2.x   | AWS ES 2.x | ES 5.x   |
++========+==========+============+==========+============+==========+
+|    3   |    yes   |     yes*   |   yes    |     yes*   |   no     |
++--------+----------+------------+----------+------------+----------+
+|    4   |    no    |     no     |   yes    |     no     |   yes    |
++--------+----------+------------+----------+------------+----------+
 
 It is important to note that Curator 4 will not work with indices created in
 versions of Elasticsearch older than 1.4 (if they have been subsequently
@@ -38,6 +38,12 @@ It is also important to note that Curator 4 requires access to the
 support this endpoint (such as AWS ES, see #717) *will not* be able to use
 Curator version 4.
 
+\* It appears that AWS ES `does not allow access to the snapshot status endpoint`_
+for either 1.x or 2.x versions.  This prevents Curator 3 from being used to
+make snapshots.
+
+.. _does not allow access to the snapshot status endpoint: https://github.com/elastic/curator/issues/796
+
 Build Status
 ------------
 
@@ -52,6 +58,8 @@ Build Status
 +--------+----------+
 | 4.1    | |4_1|    |
 +--------+----------+
+| 4.2    | |4_2|    |
++--------+----------+
 
 PyPI: |pypi_pkg|
 
@@ -62,6 +70,8 @@ PyPI: |pypi_pkg|
 .. |4_0| image:: https://travis-ci.org/elastic/curator.svg?branch=4.0
     :target: https://travis-ci.org/elastic/curator
 .. |4_1| image:: https://travis-ci.org/elastic/curator.svg?branch=4.1
+    :target: https://travis-ci.org/elastic/curator
+.. |4_2| image:: https://travis-ci.org/elastic/curator.svg?branch=4.2
     :target: https://travis-ci.org/elastic/curator
 .. |pypi_pkg| image:: https://badge.fury.io/py/elasticsearch-curator.svg
     :target: https://badge.fury.io/py/elasticsearch-curator
@@ -91,7 +101,7 @@ http://elastic.co/guide at http://www.elastic.co/guide/en/elasticsearch/client/c
 `Getting Started`_
 ------------------
 
-.. _Getting Started: https://www.elastic.co/guide/en/elasticsearch/client/curator/current/getting-started.html
++.. _Getting Started: https://www.elastic.co/guide/en/elasticsearch/client/curator/current/about.html
 
 See the `Installation guide <https://www.elastic.co/guide/en/elasticsearch/client/curator/current/installation.html>`_
 and the `command-line usage guide <https://www.elastic.co/guide/en/elasticsearch/client/curator/current/command-line.html>`_

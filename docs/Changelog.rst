@@ -3,6 +3,145 @@
 Changelog
 =========
 
+4.2.6 (27 January 2016)
+
+**General**
+
+  * Change max supported version of Elasticsearch so Curator will work with
+    elasticsearch 5.2
+  * Use ``isinstance()`` to verify client object. #862 (cp2587)
+  * Update ``certifi`` dependency to latest version
+
+**Documentation**
+
+  * Add version compatibility section to official documentation.
+
+4.2.5 (22 December 2016)
+------------------------
+
+**General**
+
+  * Add and increment test versions for Travis CI. #839 (untergeek)
+  * Make `filter_list` optional in snapshot, show_snapshot and show_indices
+    singleton actions. #853 (alexef)
+
+**Bug Fixes**
+
+  * Fix cli integration test when different host/port are specified.  Reported
+    in #843 (untergeek)
+  * Catch empty list condition during filter iteration in singleton actions.
+    Reported in #848 (untergeek)
+
+**Documentation**
+
+  * Add docs regarding how filters are ANDed together, and how to do an OR with
+    the regex pattern filter type. Requested in #842 (untergeek)
+  * Fix typo in Click version in docs. #850 (breml)
+  * Where applicable, replace `[source,text]` with `[source,yaml]` for better
+    formatting in the resulting docs.
+
+4.2.4 (7 December 2016)
+-----------------------
+
+**Bug Fixes**
+
+  * ``--wait_for_completion`` should be `True` by default for Snapshot singleton
+    action.  Reported in #829 (untergeek)
+  * Increase `version_max` to 5.1.99. Prematurely reported in #832 (untergeek)
+  * Make the '.security' index visible for snapshots so long as proper
+    credentials are used. Reported in #826 (untergeek)
+
+4.2.3.post1 (22 November 2016)
+------------------------------
+
+This fix is `only` going in for ``pip``-based installs.  There are no other code
+changes.
+
+**Bug Fixes**
+
+  * Fixed incorrect assumption of PyPI picking up dependency for certifi.  It
+    is still a dependency, but should not affect ``pip`` installs with an error
+    any more.  Reported in #821 (untergeek)
+
+
+4.2.3 (21 November 2016)
+------------------------
+
+4.2.2 was pulled immediately after release after it was discovered that the
+Windows binary distributions were still not including the certifi-provided
+certificates.  This has now been remedied.
+
+**General**
+
+  * ``certifi`` is now officially a requirement.
+  * ``setup.py`` now forcibly includes the ``certifi`` certificate PEM file in
+    the "frozen" distributions (i.e., the compiled versions).  The
+    ``get_client`` method was updated to reflect this and catch it for both the
+    Linux and Windows binary distributions.  This should `finally` put to rest
+    #810
+
+4.2.2 (21 November 2016)
+------------------------
+
+**Bug Fixes**
+
+  * The certifi-provided certificates were not propagating to the compiled
+    RPM/DEB packages.  This has been corrected.  Reported in #810 (untergeek)
+
+**General**
+
+  * Added missing ``--ignore_empty_list`` option to singleton actions. Requested
+    in #812 (untergeek)
+
+**Documentation**
+
+  * Add a FAQ entry regarding the click module's need for Unicode when using
+    Python 3.  Kind of a bug fix too, as the entry_points were altered to catch
+    this omission and report a potential solution on the command-line. Reported
+    in #814 (untergeek)
+  * Change the "Command-Line" documentation header to be "Running Curator"
+
+4.2.1 (8 November 2016)
+-----------------------
+
+**Bug Fixes**
+
+  * In the course of package release testing, an undesirable scenario was
+    caught where boolean flags default values for ``curator_cli`` were
+    improperly overriding values from a yaml config file.
+
+**General**
+
+  * Adding in direct download URLs for the RPM, DEB, tarball and zip packages.
+
+4.2.0 (4 November 2016)
+-----------------------
+
+**New Features**
+
+  * Shard routing allocation enable/disable. This will allow you to disable
+    shard allocation routing before performing one or more actions, and then
+    re-enable after it is complete. Requested in #446 (untergeek)
+  * Curator 3.x-style command-line.  This is now ``curator_cli``, to
+    differentiate between the current binary.  Not all actions are available,
+    but the most commonly used ones are.  With the addition in 4.1.0 of schema
+    and configuration validation, there's even a way to still do filter chaining
+    on the command-line! Requested in #767, and by many other users (untergeek)
+
+**General**
+
+  * Update testing to the most recent versions.
+  * Lock elasticsearch-py module version at >= 2.4.0 and <= 3.0.0.  There are
+    API changes in the 5.0 release that cause tests to fail.
+
+**Bug Fixes**
+
+  * Guarantee that binary packages are built from the latest Python + libraries.
+    This ensures that SSL/TLS will work without warning messages about insecure
+    connections, unless they actually are insecure. Reported in #780, though
+    the reported problem isn't what was fixed. The fix is needed based on what
+    was discovered while troubleshooting the problem. (untergeek)
+
 4.1.2 (6 October 2016)
 ----------------------
 
